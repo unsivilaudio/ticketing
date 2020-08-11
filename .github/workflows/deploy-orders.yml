@@ -1,24 +1,24 @@
-name: deploy-auth
+name: deploy-orders
 on:
     push:
         branches:
             - master
         paths:
-            - 'auth/**'
+            - 'orders/**'
 
 jobs:
     build:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - run: cd auth && docker build -t unsivilaudio/auth .
+            - run: cd orders && docker build -t unsivilaudio/orders .
             - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
               env:
                   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
                   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-            - run: docker push unsivilaudio/auth
+            - run: docker push unsivilaudio/orders
             - uses: digitalocean/action-doctl@v2
               with:
                   token: ${{ secrets.DIGITAL_OCEAN_ACCESS_TOKEN }}
             - run: doctl kubernetes cluster kubeconfig save tix-dev
-            - run: kubectl rollout restart deployment auth-depl
+            - run: kubectl rollout restart deployment orders-depl
