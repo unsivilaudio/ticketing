@@ -1,6 +1,11 @@
 import axios from 'axios';
 import https from 'https';
 
+function onRequestError(err) {
+    console.log('API Error: ', err.message);
+    return Promise.reject(err);
+}
+
 const buildClient = ({ req }) => {
     const httpsAgent = new https.Agent({
         rejectUnauthorized: false,
@@ -15,6 +20,8 @@ const buildClient = ({ req }) => {
     if (req) {
         instance.defaults.headers = req.headers;
     }
+
+    instance.interceptors.request.use(null, onRequestError);
 
     return instance;
 };
