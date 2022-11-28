@@ -13,8 +13,7 @@ const buildClient = ({ req }) => {
 
     let instance = axios.create({ httpsAgent });
     if (typeof window === 'undefined') {
-        // instance.defaults.baseURL = 'http://www.alpha-server.xyz';
-        instance.defaults.baseURL = 'http://192.168.11.230';
+        instance.defaults.baseURL = 'http://tix.dev';
         instance.defaults.headers.common['Host'] = 'tix.dev';
     }
     if (req) {
